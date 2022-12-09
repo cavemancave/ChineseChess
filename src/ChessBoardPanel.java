@@ -76,13 +76,8 @@ public class ChessBoardPanel extends JPanel {
 		initPieces();
 		
 	}
-
-	public void drawPiece(Graphics g, ChessPiece piece) {
-		Color old = g.getColor();
-		g.setColor(Color.orange);
-		g.fillOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
-
-		g.setColor(Color.RED);
+	public void drawStringCenter(Graphics g, String txt, Color c, int txtX, int txtY) {
+		
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 
 		// https://stackoverflow.com/a/1055884/5628643
@@ -102,17 +97,23 @@ public class ChessBoardPanel extends JPanel {
 //	    v  descent              yy
 //	    --	
 
-		int x = piece.x - metrics.stringWidth(piece.name) / 2;
-		int y = piece.y + metrics.getAscent() / 2;
-
-		g.drawString(piece.name, x, y);
+		int x = txtX - metrics.stringWidth(txt) / 2;
+		int y = txtY + metrics.getAscent() / 2;
+		Color old = g.getColor();
+		g.setColor(c);
+		g.drawString(txt, x, y);
 		g.setColor(old);
 	}
+	public void drawPiece(Graphics g, ChessPiece piece) {
+		Color old = g.getColor();
+		g.setColor(Color.orange);
+		g.fillOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
 
-	public void paint(Graphics g) {
-		super.paint(g);
-		g.setFont(new Font(Font.SERIF, Font.BOLD, 50));
-		g.drawString(this.msg, this.x, this.y);
+		drawStringCenter(g, piece.name, Color.RED, piece.x, piece.y);
+		
+		g.setColor(old);
+	}
+	public void drawLine(Graphics g) {
 		g.drawRect(startX, startY, 8 * gridWidth, 9 * gridWidth);
 		// horizon
 		for (int i = 1; i < 9; i += 1) {
@@ -125,7 +126,20 @@ public class ChessBoardPanel extends JPanel {
 			// down
 			g.drawLine(startX + gridWidth * i, startY + 5 * gridWidth, startX + gridWidth * i, startY + 9 * gridWidth);
 		}
+		// 
+		g.drawLine(startX+3*gridWidth, startY, startX + 5 * gridWidth, startY + gridWidth * 2);
+		g.drawLine(startX+3*gridWidth, startY + gridWidth * 2, startX + 5 * gridWidth, startY );
+		g.drawLine(startX+3*gridWidth, startY+gridWidth * 7, startX + 5 * gridWidth, startY + gridWidth * 9);
+		g.drawLine(startX+3*gridWidth, startY + gridWidth * 9, startX + 5 * gridWidth, startY + gridWidth * 7);
+	}
+	public void paint(Graphics g) {
+		super.paint(g);
+		g.setFont(new Font(Font.SERIF, Font.BOLD, 50));
+		g.drawString(this.msg, this.x, this.y);
+		drawStringCenter(g, "楚  河", Color.GRAY, startX+gridWidth*2, startY + (int)(gridWidth * 4.5));
+		drawStringCenter(g, "汉  界", Color.GRAY, startX+gridWidth*6, startY + (int)(gridWidth * 4.5));
 
+		drawLine(g);
 		for (ChessPiece piece : pieces) {
 			drawPiece(g, piece);
 		}

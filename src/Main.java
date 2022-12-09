@@ -3,8 +3,8 @@ import javax.swing.JFrame;
 
 public class Main {
 
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = 1000;
+	public static final int WIDTH = 1200;
+	public static final int HEIGHT = 1080;
 
 	public static void main(String[] args) {
 		JFrame win = new JFrame();
