@@ -30,7 +30,8 @@ public class ChessBoardPanel extends JPanel {
 		
 	}
 	public int[] myRange(int start, int stop, int step) {
-		int size = (stop - start) / step;
+		
+		int size = (stop - start) / step +1;
 		int[] nums = new int[size];
 		int num = start;
 		for(int i=0;i<size;i++) {
@@ -49,11 +50,12 @@ public class ChessBoardPanel extends JPanel {
 	}
 	public void initPieces() {
 		String[] nameArray = {"车", "马", "象", "士", "将"};
-		AddPieces(myRange(50,50+100*nameArray.length,100),50,nameArray, Color.RED);
+		AddPieces(myRange(50,50+100*nameArray.length-1,100),50,nameArray, Color.RED);
+		
 		String[] subNames = Arrays.copyOfRange(nameArray, 0, 4);
-		AddPieces(myRange(50+100*(nameArray.length+subNames.length-1),50+100*(nameArray.length-1),-100),50,subNames, Color.RED);
+		AddPieces(myRange(50+100*(nameArray.length+subNames.length-1),50+100*(nameArray.length),-100),50,subNames, Color.RED);
 		AddPieces(myRange(150,750,600),250,repeatString("炮",2), Color.RED);
-		AddPieces(myRange(50,800,200),350,repeatString("卒",5), Color.RED);
+		AddPieces(myRange(50,851,200),350,repeatString("卒",5), Color.RED);
 		
 	}
 	public ChessBoardPanel() {
@@ -96,10 +98,17 @@ public class ChessBoardPanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setFont(new Font(Font.SERIF, Font.BOLD, 50));
-		g.drawRect(startX, startY, 8*gridWidth, 8*gridWidth);
-		for (int i = 1; i < 8; i += 1) {
+		g.drawRect(startX, startY, 8*gridWidth, 9*gridWidth);
+		//horizon
+		for (int i = 1; i < 9; i += 1) {
 			g.drawLine(startX, startY+gridWidth*i, startX+8*gridWidth, startY+gridWidth*i);
-			g.drawLine(startX+gridWidth*i,startY, startX+gridWidth*i, startY+8*gridWidth );
+		}
+		//vertical
+		for (int i = 1; i < 8; i += 1) {
+			// up
+			g.drawLine(startX+gridWidth*i,startY, startX+gridWidth*i, startY+4*gridWidth );
+			// down
+			g.drawLine(startX+gridWidth*i,startY+5*gridWidth, startX+gridWidth*i, startY+9*gridWidth );
 		}
 
 		for(ChessPiece piece:pieces) {
