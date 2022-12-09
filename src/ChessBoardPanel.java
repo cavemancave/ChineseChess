@@ -36,9 +36,7 @@ public class ChessBoardPanel extends JPanel {
 
 	}
 
-	public int[] myRange(int start, int stop, int step) {
-
-		int size = (stop - start) / step + 1;
+	public int[] myRange(int start, int size, int step) {
 		int[] nums = new int[size];
 		int num = start;
 		for (int i = 0; i < size; i++) {
@@ -59,14 +57,19 @@ public class ChessBoardPanel extends JPanel {
 
 	public void initPieces() {
 		String[] nameArray = { "车", "马", "象", "士", "将" };
-		AddPieces(myRange(50, 50 + 100 * nameArray.length - 1, 100), 50, nameArray, Color.RED);
-
+		AddPieces(myRange(startX, nameArray.length, gridWidth), startY, nameArray, Color.RED);
+		AddPieces(myRange(startX, nameArray.length, gridWidth), startY+gridWidth*9, nameArray, Color.BLACK);
+		
 		String[] subNames = Arrays.copyOfRange(nameArray, 0, 4);
-		AddPieces(myRange(50 + 100 * (nameArray.length + subNames.length - 1), 50 + 100 * (nameArray.length), -100), 50,
-				subNames, Color.RED);
-		AddPieces(myRange(150, 750, 600), 250, repeatString("炮", 2), Color.RED);
-		AddPieces(myRange(50, 851, 200), 350, repeatString("卒", 5), Color.RED);
-
+		int lastPosition = startX + gridWidth * (nameArray.length + subNames.length - 1);
+		AddPieces(myRange(lastPosition, subNames.length, -gridWidth), startY, subNames, Color.RED);
+		AddPieces(myRange(lastPosition, subNames.length, -gridWidth), startY+gridWidth*9, subNames, Color.BLACK);
+		
+		AddPieces(myRange(startX + gridWidth *1, 2, gridWidth*6), startY+gridWidth*2, repeatString("炮", 2), Color.RED);
+		AddPieces(myRange(startX + gridWidth *1, 2, gridWidth*6), startY+gridWidth*7, repeatString("炮", 2), Color.BLACK);
+		
+		AddPieces(myRange(startX, 5, gridWidth*2), startY+gridWidth*3, repeatString("卒", 5), Color.RED);
+		AddPieces(myRange(startX, 5, gridWidth*2), startY+gridWidth*6, repeatString("卒", 5), Color.BLACK);
 	}
 
 	public ChessBoardPanel() {
@@ -109,7 +112,7 @@ public class ChessBoardPanel extends JPanel {
 		g.setColor(Color.orange);
 		g.fillOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
 
-		drawStringCenter(g, piece.name, Color.RED, piece.x, piece.y);
+		drawStringCenter(g, piece.name, piece.color, piece.x, piece.y);
 		
 		g.setColor(old);
 	}
