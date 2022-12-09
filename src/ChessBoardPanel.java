@@ -134,8 +134,8 @@ public class ChessBoardPanel extends JPanel {
 
 	public void run() {
 		
-		addMouseListener (new myMouse1 (this));
-		addMouseMotionListener (new MyMouse2 (this));
+		addMouseListener (new MyMouse (this));
+		addMouseMotionListener (new MyMouseMotion (this));
 		repaint();
 //		Timer timer = new Timer();
 //		TimerTask task = new TimerTask() {
@@ -146,87 +146,6 @@ public class ChessBoardPanel extends JPanel {
 //		};
 //		timer.schedule(task, 1000, 15);
 	}
-	class myMouse1 implements MouseListener {
-		ChessBoardPanel board;
-
-		myMouse1(ChessBoardPanel board) {
-			this.board = board;
-		}
-
-		public void mouseClicked(MouseEvent me) {
-			this.board.msg = "Mouse Clicked";
-			this.board.x = me.getX();
-			this.board.y = me.getY();
-			int mouseX = me.getX();
-			int mouseY = me.getY();
-			if (this.board.pickupPiece == null) {
-				for (ChessPiece piece : pieces) {
-					int distance = (int) Math.sqrt(Math.pow(mouseX - piece.x, 2) + Math.pow(mouseY - piece.y, 2));
-					if (distance < ChessBoardPanel.pieceWidth) {
-						this.board.pickupPiece = piece;
-						piece.pickUp = true;
-					}
-				}
-			} else {
-				this.board.pickupPiece.pickUp = false;
-				this.board.pickupPiece = null;
-			}
-			repaint();
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-	}
-	class MyMouse2 implements MouseMotionListener {
-		ChessBoardPanel board;
-
-		MyMouse2(ChessBoardPanel board) {
-			this.board = board;
-		}
-
-		public void mouseMoved(MouseEvent me) {
-			this.board.msg = "Mouse Moved";
-			this.board.x = me.getX();
-			this.board.y = me.getY();
-			int mouseX = me.getX();
-			int mouseY = me.getY();
-			if (this.board.pickupPiece != null) {
-				
-				this.board.pickupPiece.x = mouseX;
-				this.board.pickupPiece.y = mouseY;
-			}
-			repaint();
-		}
-
-
-		@Override
-		public void mouseDragged(MouseEvent me) {
-			this.board.msg = "Mouse Dragged";
-			this.board.x = me.getX();
-			this.board.y = me.getY();
-			repaint();
-		}
-	}
+	
 
 }
