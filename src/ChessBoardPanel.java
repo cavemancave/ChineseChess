@@ -2,21 +2,10 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.stream.IntStream;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-
 import javax.swing.JPanel;
-import java.awt.geom.Rectangle2D;
 
 public class ChessBoardPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
