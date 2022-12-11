@@ -1,4 +1,4 @@
-
+package com.cavemancave.app;
 import javax.swing.JFrame;
 
 public class Main {

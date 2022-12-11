@@ -1,3 +1,4 @@
+package com.cavemancave.app;
 import java.awt.Color;
 public class ChessPiece {
 	int x;
