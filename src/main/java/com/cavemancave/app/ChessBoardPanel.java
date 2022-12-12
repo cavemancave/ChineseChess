@@ -18,6 +18,7 @@ public class ChessBoardPanel extends JPanel {
 	public static int startY = 50;
 	public static int gridWidth = 100;
 	public ChessPiece pickupPiece;
+	
 	ArrayList<ChessPiece> pieces = new ArrayList<ChessPiece>();
 
 	public void AddPieces(int[] xs, int y, String[] names, Color color) {
@@ -47,6 +48,7 @@ public class ChessBoardPanel extends JPanel {
 	}
 
 	public void initPieces() {
+		ChessPiece.diameter = pieceWidth;
 		String[] nameArray = { "车", "马", "象", "士", "将" };
 		AddPieces(myRange(startX, nameArray.length, gridWidth), startY, nameArray, Color.RED);
 		AddPieces(myRange(startX, nameArray.length, gridWidth), startY+gridWidth*9, nameArray, Color.BLACK);
@@ -142,7 +144,9 @@ public class ChessBoardPanel extends JPanel {
 		for (ChessPiece piece : pieces) {
 			drawPiece(g, piece);
 		}
-
+		if(pickupPiece != null) {
+			drawPiece(g, pickupPiece);
+		}
 	}
 
 	public void run() {

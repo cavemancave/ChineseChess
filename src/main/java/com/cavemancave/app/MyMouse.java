@@ -9,6 +9,18 @@ class MyMouse implements MouseListener {
 			this.board = board;
 		}
 
+		public ChessPiece findPieceInPoint(int x, int y) {
+			for(ChessPiece piece:this.board.pieces) {
+				if(piece == this.board.pickupPiece) {
+					continue;
+				}
+				if(piece.InRange(x, y)) {
+					return piece;
+				}
+			}
+			return null;
+		}
+		
 		public void mouseClicked(MouseEvent me) {
 			this.board.msg = "Mouse Clicked";
 			this.board.x = me.getX();
@@ -16,16 +28,23 @@ class MyMouse implements MouseListener {
 			int mouseX = me.getX();
 			int mouseY = me.getY();
 			if (this.board.pickupPiece == null) {
-				for (ChessPiece piece : this.board.pieces) {
-					int distance = (int) Math.sqrt(Math.pow(mouseX - piece.x, 2) + Math.pow(mouseY - piece.y, 2));
-					if (distance < ChessBoardPanel.pieceWidth) {
-						this.board.pickupPiece = piece;
-						piece.pickUp = true;
-					}
+				ChessPiece piece = findPieceInPoint(mouseX, mouseY);
+				if( piece != null) {
+					this.board.pickupPiece = piece;
+					piece.pickUp = true;
 				}
 			} else {
-				this.board.pickupPiece.pickUp = false;
-				this.board.pickupPiece = null;
+				ChessPiece piece = findPieceInPoint(mouseX, mouseY);
+				if( piece != null) {
+					this.board.pickupPiece.x = piece.x;
+					this.board.pickupPiece.y = piece.y;
+					this.board.pickupPiece.pickUp = false;
+					this.board.pieces.remove(piece);
+					this.board.pickupPiece = null;
+				}else {
+					this.board.pickupPiece.pickUp = false;
+					this.board.pickupPiece = null;
+				}
 			}
 			this.board.repaint();
 		}
