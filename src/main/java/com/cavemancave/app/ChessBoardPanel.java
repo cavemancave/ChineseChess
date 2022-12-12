@@ -1,7 +1,9 @@
 package com.cavemancave.app;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,7 +104,12 @@ public class ChessBoardPanel extends JPanel {
 		g.fillOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
 
 		drawStringCenter(g, piece.name, piece.color, piece.x, piece.y);
-		
+		if(piece.pickUp == true) {
+			g.setColor(Color.RED);
+			Graphics2D g2 = (Graphics2D) g;
+		    g2.setStroke(new BasicStroke(3));
+			g2.drawOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
+		}
 		g.setColor(old);
 	}
 	public void drawLine(Graphics g) {
