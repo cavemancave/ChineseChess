@@ -1,5 +1,9 @@
-# ChineseChess
+# 简介
+java练习-中国象棋小游戏  
+利用awt和swing库绘制界面，使用鼠标操作对战   
+![ScreenShot_Main](ScreenShot_Main.png)  
 
+# 参考
 如何用面向对象设计一个程序，经典推荐？ - rufeng2000的回答 - 知乎
 https://www.zhihu.com/question/36113705/answer/2405176382
 
