@@ -1,7 +1,7 @@
 package com.cavemancave.app;
 import java.awt.Color;
 public class ChessPiece {
-    static int diameter;
+    static int size;
 	int x;
 	int y;
 	String name;
@@ -16,6 +16,6 @@ public class ChessPiece {
 	}
 	public boolean InRange(int x, int y) {
 		int distance = (int) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
-		return (distance <= diameter);
+		return (distance <= (size/2));
 	}
 }

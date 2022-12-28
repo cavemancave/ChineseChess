@@ -13,10 +13,12 @@ public class ChessBoardPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public String msg;
 	int x,y;
-	public static int pieceWidth = 90;
-	public static int startX = 50;
-	public static int startY = 50;
-	public static int gridWidth = 100;
+	public static int gridWidth = 50;
+	public static int pieceWidth = (int)(gridWidth * 0.9) ;
+	public static int startX = gridWidth/2;
+	public static int startY = gridWidth/2;
+	public static int fontSize = gridWidth/2;
+	
 	public ChessPiece pickupPiece;
 	
 	ArrayList<ChessPiece> pieces = new ArrayList<ChessPiece>();
@@ -48,7 +50,7 @@ public class ChessBoardPanel extends JPanel {
 	}
 
 	public void initPieces() {
-		ChessPiece.diameter = pieceWidth;
+		ChessPiece.size = pieceWidth;
 		String[] nameArray = { "车", "马", "象", "士", "将" };
 		AddPieces(myRange(startX, nameArray.length, gridWidth), startY, nameArray, Color.RED);
 		AddPieces(myRange(startX, nameArray.length, gridWidth), startY+gridWidth*9, nameArray, Color.BLACK);
@@ -135,7 +137,7 @@ public class ChessBoardPanel extends JPanel {
 	}
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.setFont(new Font(Font.SERIF, Font.BOLD, 50));
+		g.setFont(new Font(Font.SERIF, Font.BOLD, ChessBoardPanel.fontSize));
 		g.drawString(this.msg, this.x, this.y);
 		drawStringCenter(g, "楚  河", Color.GRAY, startX+gridWidth*2, startY + (int)(gridWidth * 4.5));
 		drawStringCenter(g, "汉  界", Color.GRAY, startX+gridWidth*6, startY + (int)(gridWidth * 4.5));
