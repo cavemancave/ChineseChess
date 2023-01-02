@@ -9,12 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class SignIn {
+public class Login {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		SignIn signin = new SignIn();
-		signin.initUI();
+		Login login = new Login();
+		login.initUI();
 	}
 
 	public void initUI() {

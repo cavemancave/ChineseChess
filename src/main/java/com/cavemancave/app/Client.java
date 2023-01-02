@@ -2,6 +2,8 @@ package com.cavemancave.app;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,6 +17,12 @@ import java.util.Scanner;
 // [read different messagetype](https://stackoverflow.com/questions/5680259/using-sockets-to-send-and-receive-data)
 //https://www.codeproject.com/Tips/991180/Java-Sockets-and-Serialization
 public class Client {
+	Socket sock;
+	InputStream input;
+	OutputStream output;
+	DataOutputStream dataOut;
+	DataInputStream dataIn;
+	
 	public static void main(String[] args) throws IOException {
 		Socket sock = new Socket("localhost", 6666); // 连接指定服务器和端口
 		try (InputStream input = sock.getInputStream()) {
@@ -25,10 +33,34 @@ public class Client {
 		sock.close();
 		System.out.println("disconnected.");
 	}
-
+	public Client(String server, int port) throws IOException{
+		Socket sock = new Socket(server, port); // 连接指定服务器和端口
+		this.sock = sock;
+		try (InputStream input = sock.getInputStream()) {
+			try (OutputStream output = sock.getOutputStream()) {
+				this.input = input;
+				this.output = output;
+				this.dataIn = new DataInputStream(input);
+				this.dataOut = new DataOutputStream(output);
+			}
+		}
+	}
+	public String SendLogin(String name, String passwd) throws IOException {
+		this.dataOut.writeByte(1);
+		this.dataOut.writeUTF(name + ' ' + passwd);
+		this.dataOut.flush();
+		String returnMsg = this.dataIn.readUTF();
+		return returnMsg;
+	}
+	public void SendPosition(int index, int x, int y) throws IOException{
+		this.dataOut.writeByte(2);
+		this.dataOut.writeByte(index);
+		this.dataOut.writeByte(x);
+		this.dataOut.writeByte(y);
+	}
 	private static void handle(InputStream input, OutputStream output) throws IOException {
-		var writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
-		var reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("[server] " + reader.readLine());
 		for (;;) {

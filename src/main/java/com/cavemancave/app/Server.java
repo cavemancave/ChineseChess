@@ -2,6 +2,8 @@ package com.cavemancave.app;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 /**
  * Learn Java from https://www.liaoxuefeng.com/
@@ -52,19 +55,47 @@ class Handler extends Thread {
 	}
 
 	private void handle(InputStream input, OutputStream output) throws IOException {
-		var writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
-		var reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-		writer.write("hello\n");
-		writer.flush();
-		for (;;) {
-			String s = reader.readLine();
-			if (s.equals("bye")) {
-				writer.write("bye\n");
-				writer.flush();
+		DataInputStream dataIn = new DataInputStream(input);
+		for(;;) {
+			byte messageType = dataIn.readByte();
+			switch(messageType) {
+			case 1:
+				handleLogin(input, output);
 				break;
+			case 2:
+				handlePosition(input, output);
+				break;
+			default:
+				System.out.println("Wrong message");
 			}
-			writer.write("ok: " + s + "\n");
-			writer.flush();
 		}
+		 
+		/*
+		 * var writer = new BufferedWriter(new OutputStreamWriter(output,
+		 * StandardCharsets.UTF_8)); var reader = new BufferedReader(new
+		 * InputStreamReader(input, StandardCharsets.UTF_8)); writer.write("hello\n");
+		 * writer.flush(); for (;;) { String s = reader.readLine(); if (s.equals("bye"))
+		 * { writer.write("bye\n"); writer.flush(); break; } writer.write("ok: " + s +
+		 * "\n"); writer.flush(); }
+		 */
+	}
+
+	private void handlePosition(InputStream input, OutputStream output) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleLogin(InputStream input, OutputStream output) throws IOException {
+		// TODO Auto-generated method stub
+		DataOutputStream dataOut = new DataOutputStream(output);
+		Scanner s = new Scanner(input);
+		String name = s.next();
+		String passwd = s.next();
+		if(name.equals(passwd)) {
+			dataOut.writeUTF("OK");
+		}else {
+			dataOut.writeUTF("Wrong password");
+		}
+		
 	}
 }
