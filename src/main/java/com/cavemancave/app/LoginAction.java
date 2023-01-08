@@ -43,7 +43,7 @@ public class LoginAction implements ActionListener {
 		String returnMsg="Connect Error";
 		
 		try {
-			Client client = new Client("localhost", 6666);
+			Client client = new Client("0.0.0.0", 6666);
 			returnMsg = client.SendLogin(name, new String(passwd));
 			
 		} catch (IOException e1) {

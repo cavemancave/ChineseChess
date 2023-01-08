@@ -14,18 +14,14 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-/**
- * Learn Java from https://www.liaoxuefeng.com/
- * 
- * @author liaoxuefeng
- */
+
 public class Server {
 	public static void main(String[] args) throws IOException {
 		ServerSocket ss = new ServerSocket(6666); // 监听指定端口
-		System.out.println("server is running...");
+		System.out.println("[server] server is running...");
 		for (;;) {
 			Socket sock = ss.accept();
-			System.out.println("connected from " + sock.getRemoteSocketAddress());
+			System.out.println("[server] connected from " + sock.getRemoteSocketAddress());
 			Thread t = new Handler(sock);
 			t.start();
 		}
@@ -50,7 +46,7 @@ class Handler extends Thread {
 				this.sock.close();
 			} catch (IOException ioe) {
 			}
-			System.out.println("client disconnected.");
+			System.out.println("[server] client disconnected.");
 		}
 	}
 
@@ -58,6 +54,7 @@ class Handler extends Thread {
 		DataInputStream dataIn = new DataInputStream(input);
 		for(;;) {
 			byte messageType = dataIn.readByte();
+			System.out.println("got a message" );
 			switch(messageType) {
 			case 1:
 				handleLogin(input, output);
@@ -66,7 +63,7 @@ class Handler extends Thread {
 				handlePosition(input, output);
 				break;
 			default:
-				System.out.println("Wrong message");
+				System.out.println("[server] Wrong message");
 			}
 		}
 		 
@@ -96,6 +93,6 @@ class Handler extends Thread {
 		}else {
 			dataOut.writeUTF("Wrong password");
 		}
-		
+		dataOut.flush();
 	}
 }

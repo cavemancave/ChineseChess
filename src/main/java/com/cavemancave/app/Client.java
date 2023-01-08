@@ -24,28 +24,30 @@ public class Client {
 	DataInputStream dataIn;
 	
 	public static void main(String[] args) throws IOException {
-		Socket sock = new Socket("localhost", 6666); // 连接指定服务器和端口
+		Socket sock = new Socket("0.0.0.0", 6666); // 连接指定服务器和端口
 		try (InputStream input = sock.getInputStream()) {
 			try (OutputStream output = sock.getOutputStream()) {
 				handle(input, output);
 			}
 		}
 		sock.close();
-		System.out.println("disconnected.");
+		System.out.println("[client] client disconnected.");
 	}
 	public Client(String server, int port) throws IOException{
 		Socket sock = new Socket(server, port); // 连接指定服务器和端口
 		this.sock = sock;
-		try (InputStream input = sock.getInputStream()) {
-			try (OutputStream output = sock.getOutputStream()) {
-				this.input = input;
-				this.output = output;
-				this.dataIn = new DataInputStream(input);
-				this.dataOut = new DataOutputStream(output);
-			}
-		}
+		this.input = sock.getInputStream();
+		this.output = sock.getOutputStream();
+		this.dataIn = new DataInputStream(this.input);
+		this.dataOut = new DataOutputStream(this.output);
+		System.out.println(sock.isClosed());
 	}
 	public String SendLogin(String name, String passwd) throws IOException {
+		System.out.println("send login");
+		System.out.println(this.sock.isClosed());
+		DataOutputStream dOut= new DataOutputStream(sock.getOutputStream());
+		dOut.write(1);
+		this.output.write(1);
 		this.dataOut.writeByte(1);
 		this.dataOut.writeUTF(name + ' ' + passwd);
 		this.dataOut.flush();
