@@ -79,3 +79,30 @@ endif
 @enduml
 
 ```
+File -> Import -> Maven -> Existing Maven Project -> Browser -> Select ChineseChess Folder -> Finish
+On Left Package Explorer Panel -> Right Click On this package -> Maven -> Update Project
+然后就可以运行了
+
+ubuntu 
+1. 要安装maven和openjdk
+sudo apt install maven openjdk-11-jdk
+2. 设置eclipse源
+Eclipse -> Window -> Preferences -> Install/Update -> Available Software Sites
+https://mirrors.ustc.edu.cn/eclipse/releases/2023-09
+http://mirrors.ustc.edu.cn/eclipse/releases/2023-09/202309131000/
+3. 设置maven源
+create ~/.m2/settings.xml
+```xml
+<settings>
+    <mirrors>
+        <mirror>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <mirrorOf>central</mirrorOf>
+            <!-- 国内推荐阿里云的Maven镜像 -->
+            <url>https://maven.aliyun.com/repository/central</url>
+        </mirror>
+    </mirrors>
+</settings>
+```
+
