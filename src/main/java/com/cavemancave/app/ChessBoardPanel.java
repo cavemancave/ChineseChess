@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import javax.swing.JPanel;
 
 public class ChessBoardPanel extends JPanel {
@@ -15,64 +15,71 @@ public class ChessBoardPanel extends JPanel {
 	int x,y;
 	public static int gridWidth = 50;
 	public static int pieceWidth = (int)(gridWidth * 0.9) ;
-	public static int startX = gridWidth/2;
-	public static int startY = gridWidth/2;
+	public static int startX = gridWidth;
+	public static int startY = gridWidth;
 	public static int fontSize = gridWidth/2;
-	
-	public ChessPiece pickupPiece;
-	
-	ArrayList<ChessPiece> pieces = new ArrayList<ChessPiece>();
-
-	public void AddPieces(int[] xs, int y, String[] names, Color color) {
-		for (int i = 0; i < xs.length; i++) {
-			this.pieces.add(new ChessPiece(xs[i], y, names[i], color, false));
-		}
-
-	}
-
-	public int[] myRange(int start, int size, int step) {
-		int[] nums = new int[size];
-		int num = start;
-		for (int i = 0; i < size; i++) {
-			nums[i] = num;
-			num += step;
-		}
-		return nums;
-	}
-
-	public String[] repeatString(String text, int size) {
-
-		String[] texts = new String[size];
-		for (int i = 0; i < size; i++) {
-			texts[i] = text;
-		}
-		return texts;
-	}
-
+	GameState gameState;
+	List<ChessPiece> pieces;
 	public void initPieces() {
-		ChessPiece.size = pieceWidth;
-		String[] nameArray = { "车", "马", "象", "士", "将" };
-		AddPieces(myRange(startX, nameArray.length, gridWidth), startY, nameArray, Color.RED);
-		AddPieces(myRange(startX, nameArray.length, gridWidth), startY+gridWidth*9, nameArray, Color.BLACK);
-		
-		String[] subNames = Arrays.copyOfRange(nameArray, 0, 4);
-		int lastPosition = startX + gridWidth * (nameArray.length + subNames.length - 1);
-		AddPieces(myRange(lastPosition, subNames.length, -gridWidth), startY, subNames, Color.RED);
-		AddPieces(myRange(lastPosition, subNames.length, -gridWidth), startY+gridWidth*9, subNames, Color.BLACK);
-		
-		AddPieces(myRange(startX + gridWidth *1, 2, gridWidth*6), startY+gridWidth*2, repeatString("炮", 2), Color.RED);
-		AddPieces(myRange(startX + gridWidth *1, 2, gridWidth*6), startY+gridWidth*7, repeatString("炮", 2), Color.BLACK);
-		
-		AddPieces(myRange(startX, 5, gridWidth*2), startY+gridWidth*3, repeatString("卒", 5), Color.RED);
-		AddPieces(myRange(startX, 5, gridWidth*2), startY+gridWidth*6, repeatString("卒", 5), Color.BLACK);
+		this.pieces = new ArrayList<>();
+		this.pieces.add(new ChessPiece("车", Color.RED, new Point(0,0)));
+		this.pieces.add(new ChessPiece("马", Color.RED, new Point(1,0)));
+		this.pieces.add(new ChessPiece("相", Color.RED, new Point(2,0)));
+		this.pieces.add(new ChessPiece("士", Color.RED, new Point(3,0)));
+		this.pieces.add(new ChessPiece("将", Color.RED, new Point(4,0)));
+		this.pieces.add(new ChessPiece("士", Color.RED, new Point(5,0)));
+		this.pieces.add(new ChessPiece("相", Color.RED, new Point(6,0)));
+		this.pieces.add(new ChessPiece("马", Color.RED, new Point(7,0)));
+		this.pieces.add(new ChessPiece("车", Color.RED, new Point(8,0)));
+		this.pieces.add(new ChessPiece("炮", Color.RED, new Point(1,2)));
+		this.pieces.add(new ChessPiece("炮", Color.RED, new Point(7,2)));
+		this.pieces.add(new ChessPiece("兵", Color.RED, new Point(0,3)));
+		this.pieces.add(new ChessPiece("兵", Color.RED, new Point(2,3)));
+		this.pieces.add(new ChessPiece("兵", Color.RED, new Point(4,3)));
+		this.pieces.add(new ChessPiece("兵", Color.RED, new Point(6,3)));
+		this.pieces.add(new ChessPiece("兵", Color.RED, new Point(8,3)));
+		this.pieces.add(new ChessPiece("车", Color.BLACK, new Point(0,9)));
+		this.pieces.add(new ChessPiece("马", Color.BLACK, new Point(1,9)));
+		this.pieces.add(new ChessPiece("相", Color.BLACK, new Point(2,9)));
+		this.pieces.add(new ChessPiece("士", Color.BLACK, new Point(3,9)));
+		this.pieces.add(new ChessPiece("将", Color.BLACK, new Point(4,9)));
+		this.pieces.add(new ChessPiece("士", Color.BLACK, new Point(5,9)));
+		this.pieces.add(new ChessPiece("相", Color.BLACK, new Point(6,9)));
+		this.pieces.add(new ChessPiece("马", Color.BLACK, new Point(7,9)));
+		this.pieces.add(new ChessPiece("车", Color.BLACK, new Point(8,9)));
+		this.pieces.add(new ChessPiece("炮", Color.BLACK, new Point(1,7)));
+		this.pieces.add(new ChessPiece("炮", Color.BLACK, new Point(7,7)));
+		this.pieces.add(new ChessPiece("兵", Color.BLACK, new Point(0,6)));
+		this.pieces.add(new ChessPiece("兵", Color.BLACK, new Point(2,6)));
+		this.pieces.add(new ChessPiece("兵", Color.BLACK, new Point(4,6)));
+		this.pieces.add(new ChessPiece("兵", Color.BLACK, new Point(6,6)));
+		this.pieces.add(new ChessPiece("兵", Color.BLACK, new Point(8,6)));
 	}
-
+	public void initPositionMap(List<ChessPiece> pieces) {
+		for(ChessPiece piece : pieces) {
+			gameState.postionMap[piece.position.y][piece.position.x] = piece;
+		}
+	}
+	
 	public ChessBoardPanel() {
 		msg="";
 		x=0;
 		y=0;
 		initPieces();
+		gameState = new GameState(Color.RED);
+		initPositionMap(this.pieces);
+	}
+	public Point getGridPoint(int x, int y, int gridWidth, int radius) {
+		int halfWidth = gridWidth / 2;
+		int gridX = (x + halfWidth) / gridWidth;
+		int gridY = (y + halfWidth) / gridWidth;
 		
+		double distance = Math.sqrt(Math.pow(gridX*gridWidth - x, 2) + Math.pow(gridY*gridWidth - y, 2));
+		if(distance > radius) {
+			return null;
+		}
+		Point p = new Point(gridX-1, gridY-1);
+		return p;
 	}
 	public void drawStringCenter(Graphics g, String txt, Color c, int txtX, int txtY) {
 		
@@ -102,17 +109,26 @@ public class ChessBoardPanel extends JPanel {
 		g.drawString(txt, x, y);
 		g.setColor(old);
 	}
+	public void fillOval(Graphics g, Point center, int radias) {
+		g.fillOval(center.x - radias/2, center.y - radias/2, radias, radias);
+	}
+	public void drawOval(Graphics g, Point center, int radias) {
+		g.drawOval(center.x - radias/2, center.y - radias/2, radias, radias);
+	}
 	public void drawPiece(Graphics g, ChessPiece piece) {
+		if(piece.eaten) return;
 		Color old = g.getColor();
 		g.setColor(Color.orange);
-		g.fillOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
-
-		drawStringCenter(g, piece.name, piece.color, piece.x, piece.y);
-		if(piece.pickUp == true) {
+		int drawX = (piece.position.x + 1 )* gridWidth;
+		int drawY = (piece.position.y + 1 )* gridWidth;
+		Point center = new Point(drawX, drawY);
+		fillOval(g, center, pieceWidth);
+		drawStringCenter(g, piece.type, piece.color, drawX, drawY);
+		if(piece.picked == true) {
 			g.setColor(Color.RED);
 			Graphics2D g2 = (Graphics2D) g;
 		    g2.setStroke(new BasicStroke(3));
-			g2.drawOval(piece.x - pieceWidth / 2, piece.y - pieceWidth / 2, pieceWidth, pieceWidth);
+		    drawOval(g, center, pieceWidth);
 		}
 		g.setColor(old);
 	}
@@ -146,9 +162,7 @@ public class ChessBoardPanel extends JPanel {
 		for (ChessPiece piece : pieces) {
 			drawPiece(g, piece);
 		}
-		if(pickupPiece != null) {
-			drawPiece(g, pickupPiece);
-		}
+
 	}
 
 	public void run() {

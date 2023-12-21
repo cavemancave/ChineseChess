@@ -10,17 +10,18 @@ class MyMouseMotion implements MouseMotionListener {
 		}
 
 		public void mouseMoved(MouseEvent me) {
-			this.board.msg = "Mouse Moved";
-			this.board.x = me.getX();
-			this.board.y = me.getY();
 			int mouseX = me.getX();
 			int mouseY = me.getY();
-			if (this.board.pickupPiece != null) {
-				
-				this.board.pickupPiece.x = mouseX;
-				this.board.pickupPiece.y = mouseY;
-			}
-			this.board.repaint();
+			this.board.msg = "Mouse Moved["+mouseX+","+mouseY+"]";
+			this.board.x = mouseX;
+			this.board.y = mouseY;
+
+			/*
+			 * if (this.board.pickupPiece != null) {
+			 * 
+			 * this.board.pickupPiece.x = mouseX; this.board.pickupPiece.y = mouseY; }
+			 */
+			//this.board.repaint();
 		}
 
 

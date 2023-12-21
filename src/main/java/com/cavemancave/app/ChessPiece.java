@@ -1,21 +1,18 @@
 package com.cavemancave.app;
 import java.awt.Color;
+
 public class ChessPiece {
-    static int size;
-	int x;
-	int y;
-	String name;
-	Color color;
-	boolean pickUp;
-	public ChessPiece(int x, int y, String name, Color color, boolean pickUp) {
-		this.x = x;
-		this.y = y;
-		this.name = name;
+	Color color; //Red / Black
+	String type; //Che,Ma,Xiang,Shi,Jiang,Pao,Bing
+	boolean picked;
+	boolean eaten;
+	public Point position;
+
+	public ChessPiece(String type, Color color, Point position) {
+		this.type = type;
 		this.color = color;
-		this.pickUp = pickUp;
-	}
-	public boolean InRange(int x, int y) {
-		int distance = (int) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
-		return (distance <= (size/2));
+		this.position = position;
+		this.picked = false;
+		this.eaten = false;
 	}
 }
