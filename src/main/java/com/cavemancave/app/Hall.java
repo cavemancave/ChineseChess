@@ -10,7 +10,7 @@ public class Hall {
 
 	public void InitUI() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

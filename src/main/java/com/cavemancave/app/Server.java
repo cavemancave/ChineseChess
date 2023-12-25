@@ -14,7 +14,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-
 public class Server {
 	public static void main(String[] args) throws IOException {
 		ServerSocket ss = new ServerSocket(6666); // 监听指定端口
@@ -52,10 +51,10 @@ class Handler extends Thread {
 
 	private void handle(InputStream input, OutputStream output) throws IOException {
 		DataInputStream dataIn = new DataInputStream(input);
-		for(;;) {
+		for (;;) {
 			byte messageType = dataIn.readByte();
-			System.out.println("got a message" );
-			switch(messageType) {
+			System.out.println("got a message");
+			switch (messageType) {
 			case 1:
 				handleLogin(input, output);
 				break;
@@ -66,7 +65,7 @@ class Handler extends Thread {
 				System.out.println("[server] Wrong message");
 			}
 		}
-		 
+
 		/*
 		 * var writer = new BufferedWriter(new OutputStreamWriter(output,
 		 * StandardCharsets.UTF_8)); var reader = new BufferedReader(new
@@ -79,7 +78,7 @@ class Handler extends Thread {
 
 	private void handlePosition(InputStream input, OutputStream output) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void handleLogin(InputStream input, OutputStream output) throws IOException {
@@ -88,9 +87,9 @@ class Handler extends Thread {
 		Scanner s = new Scanner(input);
 		String name = s.next();
 		String passwd = s.next();
-		if(name.equals(passwd)) {
+		if (name.equals(passwd)) {
 			dataOut.writeUTF("OK");
-		}else {
+		} else {
 			dataOut.writeUTF("Wrong password");
 		}
 		dataOut.flush();

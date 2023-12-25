@@ -11,10 +11,11 @@ https://www.xqbase.com/protocol/cchess_move.htm
 第一种简单点，先实现第一种。
 
 Jpanel是从左上角作原点，
-0 1 2 3 4 5 6 7 8 x
+ 0 1 2 3 4 5 6 7 8 x
+0车马象士将士象马车 
 1
-2
-3
+2 炮
+3卒
 4
 5
 6

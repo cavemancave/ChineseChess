@@ -40,17 +40,17 @@ public class LoginAction implements ActionListener {
 		// TODO Auto-generated method stub
 		String name = this.txt_name.getText();
 		char[] passwd = this.txt_pass.getPassword();
-		String returnMsg="Connect Error";
-		
+		String returnMsg = "Connect Error";
+
 		try {
 			Client client = new Client("0.0.0.0", 6666);
 			returnMsg = client.SendLogin(name, new String(passwd));
-			
+
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		if (returnMsg.equals("OK")) {
 
 			Hall hall = new Hall(txt_name);
