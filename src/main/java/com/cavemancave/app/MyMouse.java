@@ -1,9 +1,15 @@
 package com.cavemancave.app;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 class MyMouse implements MouseListener {
+	static final Logger logger = LoggerFactory.getLogger(MyMouse.class);
+	
 	ChessBoardPanel board;
 
 	MyMouse(ChessBoardPanel board) {
@@ -17,17 +23,23 @@ class MyMouse implements MouseListener {
 	}
 
 	public void DoDropDown(ChessPiece pickedPiece, Point dstPoint) {
+		logger.info("enter DoDropDown.");
 		if(dstPoint == null) {
 			DoCancel(pickedPiece);
+			return;
 		}
+		logger.info("dstPoint[{},{}]", dstPoint.x, dstPoint.y);
 		Point matchedTarget = null;
 		for (Point target : this.board.gameState.targetPositions) {
-			if (dstPoint == target) {
+			if (dstPoint.equals(target)) {
 				matchedTarget = target;
+				logger.info("found target[{},{}]", target.x, target.y);
 				break;
 			}
+			logger.info("checked target[{},{}]", target.x, target.y);
 		}
 		if (matchedTarget == null) {
+			logger.info("DoCancel");
 			DoCancel(pickedPiece);
 			return;
 		}
@@ -42,24 +54,27 @@ class MyMouse implements MouseListener {
 		this.board.gameState.pickedPiece = null;
 		this.board.gameState.targetPositions.clear();
 		this.board.gameState.postionMap[dstPoint.y][dstPoint.x] = pickedPiece;
+		this.board.gameState.ReveseActiveColor();
 	}
 	public void DoPickup(Point gridPoint) {
 		if(gridPoint == null ) {
 			return;
 		}
 		ChessPiece selectedPiece = this.board.gameState.postionMap[gridPoint.y][gridPoint.x];
-		if (selectedPiece != null) {
+		if (selectedPiece != null && selectedPiece.color == this.board.gameState.activeColor) {
 			selectedPiece.picked = true;
 			this.board.gameState.pickedPiece = selectedPiece;
 			this.board.gameState.CalcTargetPositions();
 		}
 	}
 	public void mouseClicked(MouseEvent me) {
+		
 		this.board.msg = "Mouse Clicked";
 		this.board.x = me.getX();
 		this.board.y = me.getY();
 		int mouseX = me.getX();
 		int mouseY = me.getY();
+		logger.info("Mouse Clicked [{}, {}]", mouseX, mouseY);
 		Point gridPoint = this.board.getGridPoint(mouseX, mouseY, ChessBoardPanel.gridWidth,
 				ChessBoardPanel.pieceWidth / 2);
 
