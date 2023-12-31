@@ -132,7 +132,7 @@ public class ChessBoardPanel extends JPanel {
 	public void drawOval(Graphics g, Point center, int radias) {
 		g.drawOval(center.x - radias / 2, center.y - radias / 2, radias, radias);
 	}
-
+	
 	public void drawPiece(Graphics g, ChessPiece piece) {
 		if (piece.eaten)
 			return;
@@ -146,7 +146,7 @@ public class ChessBoardPanel extends JPanel {
 		if (piece.picked == true) {
 			g.setColor(Color.RED);
 			Graphics2D g2 = (Graphics2D) g;
-			g2.setStroke(new BasicStroke(3));
+			//g2.setStroke(new BasicStroke(3));
 			drawOval(g, center, pieceWidth);
 		}
 		g.setColor(old);
@@ -182,7 +182,41 @@ public class ChessBoardPanel extends JPanel {
 		g.drawLine(startX + 3 * gridWidth, startY + gridWidth * 7, startX + 5 * gridWidth, startY + gridWidth * 9);
 		g.drawLine(startX + 3 * gridWidth, startY + gridWidth * 9, startX + 5 * gridWidth, startY + gridWidth * 7);
 	}
-
+	public void drawRectCorner(Graphics g, Point p) {
+		int quarterWidth = gridWidth/4;
+		int halfWidth = gridWidth/2;
+		int topLeftX = p.x * gridWidth + halfWidth;
+		int topLeftY = p.y * gridWidth + halfWidth;
+		int topRightX = topLeftX + gridWidth;
+		int topRightY = topLeftY;
+		int downLeftX = topLeftX;
+		int downLeftY = topLeftY + gridWidth;
+		int downRightX = topRightX;
+		int downRightY = downLeftY;
+		g.setColor(Color.BLACK);
+		g.drawLine(topLeftX, topLeftY, topLeftX+quarterWidth, topLeftY);
+		g.drawLine(topLeftX, topLeftY, topLeftX, topLeftY+quarterWidth);
+		
+		g.drawLine(topRightX, topRightY, topRightX-quarterWidth, topLeftY);
+		g.drawLine(topRightX, topRightY, topRightX, topRightY+quarterWidth);
+		
+		g.drawLine(downLeftX, downLeftY, downLeftX+quarterWidth, downLeftY);
+		g.drawLine(downLeftX, downLeftY, downLeftX, downLeftY-quarterWidth);
+		
+		g.drawLine(downRightX, downRightY, downRightX-quarterWidth, downRightY);
+		g.drawLine(downRightX, downRightY, downRightX, downRightY-quarterWidth);
+		
+	}
+	public void drawMoveEnds(Graphics g) {
+		Point moveStart = this.gameState.moveStart;
+		if(moveStart != null) {
+			drawRectCorner(g, moveStart);
+		}
+		Point moveEnd = this.gameState.moveEnd;
+		if(moveEnd != null) {
+			drawRectCorner(g, moveEnd);
+		}
+	}
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setFont(new Font(Font.SERIF, Font.BOLD, ChessBoardPanel.fontSize));
@@ -195,6 +229,7 @@ public class ChessBoardPanel extends JPanel {
 			drawPiece(g, piece);
 		}
 		drawTarget(g, this.gameState.targetPositions);
+		drawMoveEnds(g);
 	}
 
 	public void run() {
