@@ -1,8 +1,11 @@
 # 简介
 java练习-中国象棋小游戏  
 利用awt和swing库绘制界面，使用鼠标操作对战   
-![ScreenShot_Main](img/ScreenShot_Main.png)  
+![screenshot_main](img/screenshot_main.png)  
+![screenshot_pickup](img/screenshot_pickup.png)  
+![screenshot_dropdown](img/screenshot_dropdown.png)  
 
+参考
 [中国象棋竞赛规则(2011年试行版)](https://www.xqbase.com/protocol/rule2011.pdf)
 https://www.xqbase.com/protocol/cchess_move.htm
 
