@@ -17,7 +17,8 @@ public class GameState {
 	public ChessPiece[][] postionMap;
 	public ChessPiece pickedPiece;
 	boolean finished;
-
+	Color LoseColor;
+	
 	public GameState(Color activeColor) {
 		this.activeColor = activeColor;
 		this.selected = false;
@@ -86,7 +87,17 @@ public class GameState {
 		Point curPosition = this.pickedPiece.position;
 		int x = curPosition.x;
 		int y = curPosition.y;
-
+		
+		// 对将
+		int step = (this.pickedPiece.color == Color.RED)?1:-1;
+		for(int i=step;(y+i<=9)&&(y+i>=0);i+=step) {
+			Point dstPoint = new Point(x, y+i);
+			ChessPiece dstPiece = this.GetPiece(dstPoint);
+			if ((dstPiece != null) && (dstPiece.type == "将")) {
+				this.targetPositions.add(dstPoint);
+				return;
+			}
+		}
 		Point[] dst = new Point[4];
 		dst[0] = new Point(0, -1);
 		dst[1] = new Point(1, 0);
@@ -108,8 +119,7 @@ public class GameState {
 
 			this.targetPositions.add(dstPoint);
 		}
-		//TODO 对将
-
+		
 	}
 
 	private void CalcTargetPositionShi() {

@@ -230,6 +230,7 @@ public class ChessBoardPanel extends JPanel {
 		}
 		drawTarget(g, this.gameState.targetPositions);
 		drawMoveEnds(g);
+		
 	}
 
 	public void run() {

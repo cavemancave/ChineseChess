@@ -44,9 +44,6 @@ class MyMouse implements MouseListener {
 			return;
 		}
 		ChessPiece dstPiece = this.board.gameState.postionMap[dstPoint.y][dstPoint.x];
-		if (dstPiece != null) {
-			dstPiece.eaten = true;
-		}
 		
 		this.board.gameState.moveStart = pickedPiece.position;
 		this.board.gameState.moveEnd = dstPoint;
@@ -56,6 +53,15 @@ class MyMouse implements MouseListener {
 		this.board.gameState.pickedPiece = null;
 		this.board.gameState.targetPositions.clear();
 		this.board.gameState.postionMap[dstPoint.y][dstPoint.x] = pickedPiece;
+		
+		
+		if (dstPiece != null) {
+			dstPiece.eaten = true;
+			if(dstPiece.type == "将") {
+				this.board.gameState.finished = true;
+				this.board.gameState.LoseColor = dstPiece.color;
+			}
+		}
 		
 		this.board.gameState.ReveseActiveColor();
 	}
