@@ -65,7 +65,24 @@ y
 # 联机
 2个窗口，分别作为server，显示自己的端口，可以输入对方的ip和端口，
 将
+修改为状态机，
 
+```uml
+
+@startuml
+[*] -> WaitInput
+WaitInput -> PreMove : Input
+PreMove -> WaitInput : InputInvalid
+PreMove -> Moved : InputValid
+Moved -> Win : EatJiang
+Moved -> Lose : JiangEaten
+Win -> [*]
+Lose -> [*]
+@enduml
+````
+
+
+主状态    初始化 -》 等待输入 -》移动-》
 
 ## 登录或注册页面
 如果用户注册过，检查密码通过，则进入大厅   
